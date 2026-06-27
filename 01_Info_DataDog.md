@@ -631,4 +631,7 @@ The Backend displays all this information in one place and alerts the DevOps tea
 
 ---
 # Q: What is the difference between Datadog Agent and Datadog Backend?**
-> The **Datadog Agent** is a lightweight software installed on hosts such as VMs, servers, containers, or Kubernetes nodes. It collects metrics, logs, traces, and system information and securely sends them to the Datadog Backend. The **Datadog Backend** is the cloud-based SaaS platform that receives, stores, analyzes, and visualizes this data. It provides dashboards, alerting, log management, APM, and analytics, enabling DevOps teams to monitor and troubleshoot their infrastructure and applications from a centralized platform.
+
+> The **Datadog Agent** is a lightweight software installed on hosts such as VMs, servers, containers, or Kubernetes nodes. It collects metrics, logs, traces, and system information and securely sends them to the Datadog Backend.
+
+>The **Datadog Backend** is the cloud-based SaaS platform that receives, stores, analyzes, and visualizes this data. It provides dashboards, alerting, log management, APM, and analytics, enabling DevOps teams to monitor and troubleshoot their infrastructure and applications from a centralized platform.
