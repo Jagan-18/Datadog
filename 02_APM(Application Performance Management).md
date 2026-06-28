@@ -871,3 +871,353 @@ This enables DevOps and development teams to identify the root cause much faster
 
 > APM monitoring is performed by instrumenting an application with a language-specific APM tracer (such as the Datadog Java Agent or Python `ddtrace`). The tracer captures request flows, response times, database calls, external service calls, and exceptions, creating traces and spans for each transaction. These traces are sent to the Datadog Agent, which forwards them securely to the Datadog Backend. The backend analyzes the data and presents it through dashboards, distributed traces, service maps, flame graphs, and alerts, enabling teams to quickly identify performance bottlenecks and troubleshoot application issues.
 
+---
+# Four Golden Signals of Monitoring
+
+The **Four Golden Signals** are the four key metrics used to monitor the health and performance of an application. They were introduced by Google's **Site Reliability Engineering (SRE)** team and are widely used in monitoring tools like **Datadog, Prometheus, Grafana, New Relic, and Dynatrace**.
+
+These signals help answer:
+
+* Is the application healthy?
+* Is it fast?
+* Can it handle user traffic?
+* Are users experiencing errors?
+
+---
+
+# 1. Latency
+
+## What is Latency?
+
+**Latency** is the amount of time it takes for an application to process a request and return a response.
+
+### Simple Definition
+
+> **Latency is the response time of an application.**
+
+---
+
+### Example
+
+```text
+User
+   │
+   ▼
+Login Request
+   │
+   ▼
+Application
+   │
+   ▼
+Response
+```
+
+If the response takes:
+
+* 100 ms → Excellent
+* 300 ms → Good
+* 2 seconds → Slow
+* 5 seconds → Poor
+
+---
+
+### Datadog Measures
+
+* API Response Time
+* Request Duration
+* Database Query Time
+* Service Response Time
+
+---
+
+### Example Dashboard
+
+```text
+Login API
+
+Average Response Time
+
+100 ms
+
+Current Response Time
+
+2.5 sec
+```
+
+Datadog alerts if latency exceeds the configured threshold.
+
+---
+
+# 2. Traffic
+
+## What is Traffic?
+
+**Traffic** is the amount of work your application is handling.
+
+It represents:
+
+* Number of Users
+* Number of Requests
+* Transactions
+* API Calls
+* Network Requests
+
+### Simple Definition
+
+> **Traffic tells us how much load the application is handling.**
+
+---
+
+### Example
+
+```text
+Morning
+
+100 Requests/sec
+
+Afternoon
+
+500 Requests/sec
+
+Sale Time
+
+5000 Requests/sec
+```
+
+---
+
+### Datadog Measures
+
+* Requests per Second (RPS)
+* Transactions per Minute
+* API Calls
+* Network Throughput
+
+---
+
+### Example Dashboard
+
+```text
+Traffic
+
+Current
+
+1,200 Requests/sec
+```
+
+---
+
+# 3. Saturation
+
+## What is Saturation?
+
+**Saturation** measures how much of your system resources are being used.
+
+Resources include:
+
+* CPU
+* Memory
+* Disk
+* Network
+* Database Connections
+
+### Simple Definition
+
+> **Saturation tells us how close the system is to its maximum capacity.**
+
+---
+
+### Example
+
+```text
+CPU Usage
+
+20% → Normal
+
+50% → Good
+
+80% → High
+
+95% → Critical
+```
+
+---
+
+### Datadog Measures
+
+* CPU Usage
+* Memory Usage
+* Disk Space
+* Network Utilization
+* Database Connection Pool
+* Kubernetes Pod Utilization
+
+---
+
+### Example Dashboard
+
+```text
+CPU Usage
+
+95%
+
+Memory Usage
+
+89%
+
+Disk Usage
+
+92%
+```
+
+Datadog can alert when resource utilization crosses defined thresholds.
+
+---
+
+# 4. Errors
+
+## What are Errors?
+
+**Errors** represent failed requests or operations that prevent users from completing their tasks successfully.
+
+Examples:
+
+* HTTP 500 Internal Server Error
+* HTTP 404 Not Found
+* Database Connection Failed
+* Timeout Exception
+* Application Crash
+
+### Simple Definition
+
+> **Errors indicate failures occurring within the application or its infrastructure.**
+
+---
+
+### Example
+
+```text
+1000 Requests
+
+980 Success
+
+20 Failed
+
+Error Rate = 2%
+```
+
+---
+
+### Datadog Measures
+
+* HTTP 4xx Errors
+* HTTP 5xx Errors
+* Exception Count
+* Failed API Calls
+* Failed Database Queries
+
+---
+
+### Example Dashboard
+
+```text
+Error Rate
+
+Current
+
+3%
+
+500 Errors
+
+25
+
+404 Errors
+
+40
+```
+
+---
+
+# Four Golden Signals Overview
+
+| Golden Signal  | What It Measures                | Example                         |
+| -------------- | ------------------------------- | ------------------------------- |
+| **Latency**    | Time taken to process a request | Login API takes **2.5 seconds** |
+| **Traffic**    | Number of requests handled      | **1,200 requests/sec**          |
+| **Saturation** | Resource utilization            | CPU usage **95%**               |
+| **Errors**     | Failed requests or operations   | **2% error rate**               |
+
+---
+
+# How Datadog Monitors the Four Golden Signals
+
+```text
+                 Users
+                   │
+                   ▼
+             Web Application
+                   │
+      ┌────────────┼────────────┐
+      ▼            ▼            ▼
+   APIs        Database      Server
+      │            │            │
+      └────────────┼────────────┘
+                   │
+             Datadog Agent
+                   │
+                   ▼
+            Datadog Backend
+                   │
+     ┌────────┬────────┬────────┬────────┐
+     ▼        ▼        ▼        ▼
+ Latency   Traffic Saturation Errors
+                   │
+                   ▼
+        Dashboards & Alerts
+```
+
+---
+
+# Real-Time Example
+
+Suppose an e-commerce application experiences slow performance.
+
+| Golden Signal | Observation                   | Root Cause                             |
+| ------------- | ----------------------------- | -------------------------------------- |
+| Latency       | Login API takes **4 seconds** | Slow database query                    |
+| Traffic       | **5,000 requests/sec**        | High user load during a sale           |
+| Saturation    | CPU usage **95%**             | Server resources nearly exhausted      |
+| Errors        | HTTP **500** errors increased | Application unable to process requests |
+
+By monitoring these four signals in Datadog, the DevOps team can quickly identify whether the issue is due to high traffic, resource exhaustion, application errors, or increased response time.
+
+---
+
+# Interview Answer
+
+**Q: What are the Four Golden Signals of Monitoring?**
+
+**Answer:**
+
+> The Four Golden Signals are **Latency, Traffic, Saturation, and Errors**. They are the key metrics recommended by Google's SRE practices for monitoring application health. **Latency** measures response time, **Traffic** measures workload such as requests per second, **Saturation** measures resource utilization like CPU and memory, and **Errors** measure failed requests or operations. Monitoring these four signals helps DevOps teams detect performance issues, identify bottlenecks, and maintain application reliability.
+
+---
+## Top APM Tools:
+
+### 1. Datadog
+
+* Cloud-based monitoring and observability platform.
+* Monitors applications, infrastructure, logs, and traces.
+* Best for cloud-native and DevOps environments.
+
+### 2. New Relic
+
+* Application Performance Monitoring (APM) tool.
+* Helps monitor application performance, errors, and user experience.
+* Provides detailed performance insights.
+
+### 3. Dynatrace
+
+* AI-powered observability and APM platform.
+* Automatically detects performance issues and identifies root causes.
+* Ideal for large and complex enterprise environments.
