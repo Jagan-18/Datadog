@@ -498,14 +498,376 @@ Datadog APM monitors:
 
 ---
 
-## DevOps Perspective
+# How is APM Monitoring Performed?
 
-As a **DevOps Engineer**, you typically use Datadog APM to:
+Application Performance Monitoring (APM) is performed by **instrumenting the application** so that performance data is collected while the application is running. This data is then sent to an APM platform (such as Datadog), where it is analyzed and displayed through dashboards, traces, and alerts.
 
-* Monitor application performance after deployments.
-* Detect performance regressions introduced by new releases.
-* Correlate application traces with infrastructure metrics and logs.
-* Troubleshoot production issues faster using distributed tracing.
-* Create alerts for high latency, increased error rates, or low throughput.
-* Verify that applications remain healthy after CI/CD deployments (e.g., through Harness).
-* Share performance dashboards with development teams to improve application reliability.
+# Step-by-Step Process of APM Monitoring
+
+## Step 1: Application is Running
+
+The application is deployed on a server, virtual machine, container, or Kubernetes cluster.
+
+Example:
+
+```text
+                Users
+                  │
+                  ▼
+         E-Commerce Application
+                  │
+         -----------------------
+         │         │           │
+         ▼         ▼           ▼
+     Login API  Order API  Payment API
+```
+
+---
+
+## Step 2: Install the Datadog Agent
+
+Install the **Datadog Agent** on the server or Kubernetes node where the application is running.
+
+Example:
+
+```text
+Linux Server
+│
+├── Java Application
+├── Oracle Database
+└── Datadog Agent
+```
+
+The Datadog Agent collects:
+
+* System Metrics
+* Application Metrics
+* Logs
+* Traces
+* Events
+
+---
+
+## Step 3: Instrument the Application
+
+To monitor application performance, the application must be instrumented with the **Datadog APM library (Tracer)**.
+
+Each programming language has its own tracer.
+
+| Programming Language | Datadog Tracer      |
+| -------------------- | ------------------- |
+| Java                 | dd-java-agent.jar   |
+| Python               | ddtrace             |
+| Node.js              | dd-trace            |
+| .NET                 | Datadog .NET Tracer |
+| Go                   | dd-trace-go         |
+| PHP                  | dd-trace-php        |
+| Ruby                 | ddtrace             |
+
+Example (Java):
+
+```text
+Application
+
+↓
+
+dd-java-agent.jar
+
+↓
+
+Application Starts
+
+↓
+
+Tracing Enabled
+```
+
+The tracer automatically captures:
+
+* HTTP Requests
+* API Calls
+* Database Queries
+* Exceptions
+* Response Time
+
+---
+
+## Step 4: User Sends a Request
+
+Example:
+
+```text
+User
+
+↓
+
+Login API
+```
+
+The request enters the application.
+
+---
+
+## Step 5: Tracer Creates a Trace
+
+As the request moves through the application, the tracer records each operation.
+
+Example:
+
+```text
+Login Request
+
+↓
+
+Authentication
+
+↓
+
+Oracle Database
+
+↓
+
+Generate Token
+
+↓
+
+Return Response
+```
+
+This complete journey is called a **Trace**.
+
+---
+
+## Step 6: Trace is Divided into Spans
+
+Each operation inside the trace becomes a **Span**.
+
+Example:
+
+```text
+Trace
+
+│
+
+├── API Gateway (20 ms)
+
+├── Authentication (40 ms)
+
+├── Oracle Query (500 ms)
+
+└── Response (15 ms)
+```
+
+Each line is an individual span.
+
+---
+
+## Step 7: Datadog Agent Collects the Trace
+
+The tracer sends trace information to the Datadog Agent.
+
+```text
+Application
+
+↓
+
+Datadog Tracer
+
+↓
+
+Datadog Agent
+```
+
+---
+
+## Step 8: Agent Sends Data to Datadog Backend
+
+The Agent securely sends all collected information using HTTPS.
+
+```text
+Datadog Agent
+
+↓
+
+HTTPS / TLS
+
+↓
+
+Datadog Backend
+```
+
+---
+
+## Step 9: Datadog Processes the Data
+
+The backend:
+
+* Stores traces
+* Calculates latency
+* Calculates throughput
+* Calculates error rate
+* Builds Service Maps
+* Creates Flame Graphs
+* Links traces with logs and infrastructure metrics
+
+---
+
+## Step 10: Display Results
+
+The DevOps team can now view:
+
+* Service Map
+* Traces
+* Spans
+* API Response Time
+* Error Rate
+* Throughput
+* Slow Database Queries
+* Alerts
+
+---
+
+# Complete APM Flow
+
+```text
+                   User
+                     │
+                     ▼
+             Sends HTTP Request
+                     │
+                     ▼
+              Web Application
+                     │
+          Datadog APM Tracer
+                     │
+     Creates Traces and Spans
+                     │
+                     ▼
+              Datadog Agent
+                     │
+             HTTPS / TLS
+                     │
+                     ▼
+             Datadog Backend
+                     │
+     ┌─────────┬──────────┬──────────┐
+     ▼         ▼          ▼
+ Dashboards  Traces    Alerts
+```
+
+---
+
+# Real Example
+
+A customer logs in to an application.
+
+```text
+Customer
+
+↓
+
+Login API
+
+↓
+
+Authentication Service
+
+↓
+
+Oracle Database
+
+↓
+
+Generate JWT Token
+
+↓
+
+Response
+```
+
+Datadog records:
+
+| Operation      | Time   |
+| -------------- | ------ |
+| Login API      | 20 ms  |
+| Authentication | 40 ms  |
+| Oracle Query   | 600 ms |
+| JWT Generation | 10 ms  |
+| Response       | 5 ms   |
+
+Total Response Time:
+
+```text
+20 + 40 + 600 + 10 + 5
+
+= 675 ms
+```
+
+Datadog immediately identifies the **Oracle Query (600 ms)** as the bottleneck.
+
+---
+
+# What Information Does APM Collect?
+
+* Request Count
+* Response Time
+* Latency
+* Throughput
+* Error Rate
+* Exceptions
+* API Calls
+* Database Queries
+* SQL Execution Time
+* External Service Calls
+* Distributed Traces
+* Service Dependencies
+
+---
+
+# DevOps Perspective
+
+In your project:
+
+* **Cloud:** GCP
+* **Source Database:** Oracle
+* **Target Database:** Cloud Spanner
+* **Migration Tool:** Striim
+* **Monitoring:** Datadog
+* **CI/CD:** Harness
+
+APM helps you monitor:
+
+```text
+Client
+   │
+   ▼
+Migration Application
+   │
+   ├── Oracle Database
+   ├── Striim
+   ├── Cloud Spanner
+   └── External APIs
+         │
+         ▼
+Datadog APM
+         │
+         ▼
+Dashboard + Alerts
+```
+
+If a migration job becomes slow, APM can show whether the delay is caused by:
+
+* A slow Oracle query
+* High Cloud Spanner latency
+* A slow Striim processing step
+* An external API timeout
+
+This enables DevOps and development teams to identify the root cause much faster than checking logs manually.
+
+---
+**Q: How is APM Monitoring Performed?**
+
+**Answer:**
+
+> APM monitoring is performed by instrumenting an application with a language-specific APM tracer (such as the Datadog Java Agent or Python `ddtrace`). The tracer captures request flows, response times, database calls, external service calls, and exceptions, creating traces and spans for each transaction. These traces are sent to the Datadog Agent, which forwards them securely to the Datadog Backend. The backend analyzes the data and presents it through dashboards, distributed traces, service maps, flame graphs, and alerts, enabling teams to quickly identify performance bottlenecks and troubleshoot application issues.
+
