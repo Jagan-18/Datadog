@@ -584,12 +584,3 @@ An SLA (Service Level Agreement) is a formal agreement between a service provide
 An Error Budget is the amount of failure or downtime that is acceptable while still meeting the SLO. It helps teams balance innovation and reliability by defining how much unreliability can be tolerated.
 
 ---
-
-# DevOps Perspective
-
-In your **Oracle → Striim → Cloud Spanner** migration project:
-
-* **SLI:** Migration success rate, API latency, pipeline availability, replication lag.
-* **SLO:** For example, *99.9% of migration jobs should complete successfully within 5 minutes*.
-* **SLA:** If your team provides migration as a customer-facing service, you may promise *99.9% availability* in a contract.
-* **Error Budget:** If the SLO is 99.9%, the team can tolerate **0.1% failures or downtime**. If the error budget is exhausted, the focus should shift from releasing new features to improving system stability and reliability.
